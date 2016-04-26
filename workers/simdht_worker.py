@@ -329,7 +329,7 @@ class Master(Thread):
                 # 更新最近发现时间，请求数
                 self.dbcurr.execute('UPDATE search_hash SET last_seen=%s, requests=requests+1 WHERE info_hash=%s', (utcnow, info_hash))
             else:
-                if dtype == 'pt':
+                if dtype == 'pt' and self.n_downloading_pt < MAX_QUEUE_PT:
                     t = threading.Thread(target=simMetadata.download_metadata, args=(address, binhash, self.metadata_queue))
                     t.setDaemon(True)
                     t.start()
